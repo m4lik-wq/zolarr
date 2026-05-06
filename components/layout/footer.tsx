@@ -52,6 +52,8 @@ const QUICK_LINKS = [
   { href: '/galeri', label: 'Galeri & Projeler' },
   { href: '/hakkimizda', label: 'Hakkımızda' },
   { href: '/iletisim', label: 'İletişim' },
+  { href: '/sss', label: 'SSS' },
+  { href: '/ayarlar', label: 'Ayarlar' },
 ];
 
 const LEGAL_LINKS = [

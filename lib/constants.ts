@@ -10,6 +10,7 @@ export const NAV_LINKS = [
   { href: '/teklif', label: 'Teklif Al/Ver' },
   { href: '/galeri', label: 'Galeri & Projeler' },
   { href: '/hakkimizda', label: 'Hakkımızda' },
+  { href: '/iletisim', label: 'İletişim' },
 ] as const;
 
 export const SOCIAL_LINKS = {
