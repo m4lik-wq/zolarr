@@ -158,3 +158,70 @@ export interface UserQuote {
   estimatedSavingsTry: number | null;
   createdAt: string;
 }
+
+export interface Notification {
+  id: string;
+  type:
+    | 'NEW_QUOTE' | 'NEW_DEALER' | 'NEW_CONTACT' | 'NEW_ORDER'
+    | 'PRICE_INCREASE' | 'PRICE_DECREASE' | 'OUT_OF_STOCK' | 'SUPPLIER_GONE';
+  payload: Record<string, unknown>;
+  isRead: boolean;
+  createdAt: string;
+}
+
+export interface AdminQuote {
+  id: string;
+  quoteNumber: string;
+  contactName: string;
+  contactPhone: string;
+  contactEmail: string;
+  city: string;
+  district: string | null;
+  installationLocation: string;
+  description: string | null;
+  status: 'new' | 'contacted' | 'quoted' | 'won' | 'lost';
+  estimatedKwp: number | null;
+  estimatedSavingsTry: number | null;
+  estimatedPaybackYears: number | null;
+  adminNotes: string | null;
+  responded: boolean;
+  respondedAt: string | null;
+  createdAt: string;
+  appliances: Array<{ name: string; consumptionKwh?: number; powerW?: number; voltageV?: number }>;
+}
+
+export interface AdminDealer {
+  id: string;
+  applicationNumber: string;
+  companyName: string;
+  contactName: string;
+  contactEmail: string;
+  contactPhone: string;
+  serviceCategories: string[];
+  serviceAreas: string[];
+  experienceYears: number | null;
+  status: 'new' | 'reviewing' | 'approved' | 'rejected';
+  adminNotes: string | null;
+  createdAt: string;
+}
+
+export interface AdminContactMessage {
+  id: string;
+  messageNumber: string;
+  name: string;
+  email: string;
+  phone: string | null;
+  subject: string | null;
+  body: string;
+  status: 'new' | 'read' | 'replied' | 'archived';
+  createdAt: string;
+}
+
+export interface AdminUser {
+  id: string;
+  email: string;
+  name: string | null;
+  phone: string | null;
+  role: 'customer' | 'moderator' | 'assistant' | 'admin';
+  createdAt: string;
+}

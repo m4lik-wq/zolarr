@@ -40,3 +40,11 @@ export async function isAdmin(): Promise<boolean> {
   const profile = await getCurrentProfile();
   return profile?.role === 'admin';
 }
+
+export async function requireAdmin() {
+  const profile = await getCurrentProfile();
+  if (!profile || profile.role !== 'admin') {
+    throw new Error('FORBIDDEN');
+  }
+  return profile;
+}
