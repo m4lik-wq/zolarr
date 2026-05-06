@@ -7,6 +7,9 @@ import { AddToCartButton } from '@/components/shop/add-to-cart-button';
 import { ProductDetailTabs } from '@/components/shop/product-detail-tabs';
 import { RelatedProducts } from '@/components/shop/related-products';
 import { formatTry, calcDiscountPercent, effectivePrice } from '@/lib/utils/price';
+import { getCurrentUser } from '@/lib/auth/server';
+import { isFavorited } from '@/lib/db/queries/favorites';
+import { FavoriteButton } from '@/components/account/favorite-button';
 
 // Match /magaza listing: defer to request-time so build doesn't try to SSG
 // every product slug while DB/Supabase may not be fully provisioned.
@@ -46,6 +49,8 @@ export default async function ProductPage({ params }: Props) {
   const inStock = product.stock > 0;
   const discountPct = calcDiscountPercent(product.price, product.discount_price);
   const finalPrice = effectivePrice(product.price, product.discount_price);
+  const user = await getCurrentUser();
+  const favorited = user ? await isFavorited(user.id, product.id) : false;
 
   return (
     <div className="container mx-auto px-4 py-10">
@@ -93,15 +98,22 @@ export default async function ProductPage({ params }: Props) {
           >
             {inStock ? `✅ Stokta — ${product.stock} adet hazır` : '❌ Stokta yok'}
           </p>
-          <div className="pt-4">
-            <AddToCartButton
+          <div className="flex flex-wrap items-start gap-3 pt-4">
+            <div className="flex-1 min-w-[220px]">
+              <AddToCartButton
+                productId={product.id}
+                slug={product.slug}
+                name={product.name}
+                priceTry={finalPrice}
+                image={product.images[0] ?? ''}
+                inStock={inStock}
+                stock={product.stock}
+              />
+            </div>
+            <FavoriteButton
               productId={product.id}
-              slug={product.slug}
-              name={product.name}
-              priceTry={finalPrice}
-              image={product.images[0] ?? ''}
-              inStock={inStock}
-              stock={product.stock}
+              initialFavorited={favorited}
+              loggedIn={!!user}
             />
           </div>
         </div>
