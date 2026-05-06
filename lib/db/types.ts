@@ -59,3 +59,49 @@ export interface Database {
     };
   };
 }
+
+export interface Project {
+  id: string;
+  slug: string;
+  title: string;
+  type: 'konut' | 'ticari' | 'tarim';
+  location: string;
+  capacityKwp: number;
+  coverImage: string;
+  description: string | null;
+  beforeImage: string | null;
+  afterImage: string | null;
+  galleryImages: string[];
+  productSlugs: string[];
+  customerQuote: string | null;
+  customerName: string | null;
+  annualSavingsTry: number | null;
+  completionDate: string | null;
+  isPublished: boolean;
+  sortOrder: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Faq {
+  id: string;
+  question: string;
+  answer: string;
+  category: 'genel' | 'teknik' | 'fiyat' | 'kurulum' | 'garanti';
+  sortOrder: number;
+  isPublished: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ContactMessage {
+  id: string;
+  messageNumber: string;
+  name: string;
+  email: string;
+  phone: string | null;
+  subject: string | null;
+  body: string;
+  status: 'new' | 'read' | 'replied' | 'archived';
+  createdAt: string;
+}
