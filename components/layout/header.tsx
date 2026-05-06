@@ -1,11 +1,12 @@
 'use client';
 
 import Link from 'next/link';
-import { ShoppingCart, User, Search } from 'lucide-react';
+import { User, Search } from 'lucide-react';
 import { Logo } from '@/components/ui/logo';
 import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { MobileMenu } from './mobile-menu';
+import { HeaderCartBadge } from './header-cart-badge';
 import { NAV_LINKS } from '@/lib/constants';
 import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
@@ -55,11 +56,7 @@ export function Header() {
               <User className="h-5 w-5" />
             </Button>
           </Link>
-          <Link href="/sepet" aria-label="Sepetim">
-            <Button variant="icon" size="icon">
-              <ShoppingCart className="h-5 w-5" />
-            </Button>
-          </Link>
+          <HeaderCartBadge />
           <MobileMenu />
         </div>
       </div>
