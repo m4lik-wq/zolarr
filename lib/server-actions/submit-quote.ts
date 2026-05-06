@@ -2,7 +2,7 @@
 
 import 'server-only';
 import { createClient } from '@/lib/supabase/server';
-import { quoteFullSchema, type QuoteFullInput } from '@/lib/validation/quote-schema';
+import { quoteFullSchema } from '@/lib/validation/quote-schema';
 import { generateQuoteNumber } from '@/lib/utils/quote-number';
 import { findIrradiance } from '@/lib/data/irradiance';
 import { estimateSystem, annualSavings, paybackYears } from '@/lib/calculator';
@@ -11,7 +11,7 @@ export type SubmitQuoteResult =
   | { ok: true; quoteNumber: string }
   | { ok: false; error: string };
 
-export async function submitQuote(input: QuoteFullInput): Promise<SubmitQuoteResult> {
+export async function submitQuote(input: unknown): Promise<SubmitQuoteResult> {
   const parsed = quoteFullSchema.safeParse(input);
   if (!parsed.success) {
     return { ok: false, error: 'Form verileri geçersiz, lütfen alanları kontrol edin.' };
