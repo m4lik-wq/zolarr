@@ -1,11 +1,12 @@
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { ProductCard } from '@/components/ui/product-card';
-import { PRODUCTS_MOCK } from '@/lib/data/products-mock';
+import { ShopProductCard } from '@/components/shop/shop-product-card';
+import { getFeaturedProducts } from '@/lib/db/queries/products';
 
-export function StockProducts() {
-  const stock = PRODUCTS_MOCK.filter((p) => p.inStock).slice(0, 8);
+export async function StockProducts() {
+  const items = await getFeaturedProducts(8);
+  if (items.length === 0) return null;
 
   return (
     <section className="border-t border-[var(--color-border-glass)] py-16" aria-labelledby="stock-heading">
@@ -27,8 +28,8 @@ export function StockProducts() {
           </Button>
         </div>
         <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-          {stock.map((p) => (
-            <ProductCard key={p.slug} product={p} />
+          {items.map((p) => (
+            <ShopProductCard key={p.id} product={p} />
           ))}
         </div>
         <div className="mt-6 text-center sm:hidden">

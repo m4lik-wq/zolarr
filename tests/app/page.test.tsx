@@ -8,6 +8,16 @@ vi.mock('next/image', () => ({
 vi.mock('embla-carousel-react', () => ({
   default: () => [vi.fn(), { scrollPrev: vi.fn(), scrollNext: vi.fn() }],
 }));
+vi.mock('@/lib/db/queries/products', () => ({
+  getFeaturedProducts: vi.fn().mockResolvedValue([]),
+}));
+vi.mock('@/components/home/stock-products', () => ({
+  StockProducts: () => (
+    <section aria-labelledby="stock-heading">
+      <h2 id="stock-heading">Stoktaki ürünler</h2>
+    </section>
+  ),
+}));
 
 describe('HomePage', () => {
   it('renders all 12 main section landmarks', () => {
