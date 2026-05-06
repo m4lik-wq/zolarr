@@ -1,8 +1,13 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { ThemeProvider } from '@/components/providers/theme-provider';
 import { Header } from './header';
 import { NAV_LINKS } from '@/lib/constants';
+
+// UserMenu is an async server component and cannot render in client test env.
+vi.mock('@/components/account/user-menu', () => ({
+  UserMenu: () => null,
+}));
 
 describe('Header', () => {
   function renderWithProvider(ui: React.ReactElement) {
