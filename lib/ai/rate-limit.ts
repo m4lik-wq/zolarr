@@ -3,6 +3,7 @@ import { createHash } from 'node:crypto';
 import { createClient } from '@supabase/supabase-js';
 
 export const ANON_DAILY_LIMIT = 10;
+export const AUTH_DAILY_LIMIT = 50;
 
 const RATE_LIMIT_SALT = 'zolarr-ai-2026-05';
 
@@ -62,6 +63,42 @@ export async function checkAndIncrement(ip: string): Promise<RateLimitResult> {
   }
 
   return { allowed: true, remaining: ANON_DAILY_LIMIT - next, limit: ANON_DAILY_LIMIT };
+}
+
+export async function checkAndIncrementForUser(userId: string): Promise<RateLimitResult> {
+  const day = todayUtc();
+  const supabase = adminClient();
+  const key = `user:${userId}`;
+
+  const { data: existing, error: fetchError } = await supabase
+    .from('ai_chat_usage')
+    .select('message_count')
+    .eq('ip_hash', key)
+    .eq('day', day)
+    .maybeSingle();
+
+  if (fetchError) {
+    throw new Error(`Rate limit okunamadı: ${fetchError.message}`);
+  }
+
+  const current = existing?.message_count ?? 0;
+  if (current >= AUTH_DAILY_LIMIT) {
+    return { allowed: false, remaining: 0, limit: AUTH_DAILY_LIMIT };
+  }
+
+  const next = current + 1;
+  const { error: upsertError } = await supabase.from('ai_chat_usage').upsert({
+    ip_hash: key,
+    day,
+    message_count: next,
+    updated_at: new Date().toISOString(),
+  });
+
+  if (upsertError) {
+    throw new Error(`Rate limit yazılamadı: ${upsertError.message}`);
+  }
+
+  return { allowed: true, remaining: AUTH_DAILY_LIMIT - next, limit: AUTH_DAILY_LIMIT };
 }
 
 export function extractIp(req: Request): string {

@@ -2,7 +2,8 @@ import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { getAnthropic, AI_MODEL, AI_MAX_TOKENS } from '@/lib/ai/client';
 import { ZOLARR_SYSTEM_PROMPT } from '@/lib/ai/system-prompt';
-import { checkAndIncrement, extractIp } from '@/lib/ai/rate-limit';
+import { checkAndIncrement, checkAndIncrementForUser, extractIp } from '@/lib/ai/rate-limit';
+import { getCurrentUser } from '@/lib/auth/server';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -29,10 +30,12 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Form geçersiz' }, { status: 400 });
   }
 
-  const ip = extractIp(req);
+  const user = await getCurrentUser();
   let limit;
   try {
-    limit = await checkAndIncrement(ip);
+    limit = user
+      ? await checkAndIncrementForUser(user.id)
+      : await checkAndIncrement(extractIp(req));
   } catch (err) {
     console.error('[ai/chat] rate limit hata:', err);
     return NextResponse.json(
@@ -44,8 +47,7 @@ export async function POST(req: Request) {
   if (!limit.allowed) {
     return NextResponse.json(
       {
-        error:
-          'Bugünkü mesaj hakkınız doldu (10 mesaj/gün). Yarın tekrar deneyin veya /iletisim sayfasından bize ulaşın.',
+        error: `Bugünkü mesaj hakkınız doldu (${limit.limit} mesaj/gün). Yarın tekrar deneyin veya /iletisim sayfasından bize ulaşın.`,
       },
       { status: 429 }
     );
