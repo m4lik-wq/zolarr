@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { Suspense } from 'react';
 import { AuthCard } from '@/components/auth/auth-card';
 import { LoginForm } from '@/components/auth/login-form';
 
@@ -22,7 +23,9 @@ export default function GirisPage() {
         </span>
       }
     >
-      <LoginForm />
+      <Suspense fallback={null}>
+        <LoginForm />
+      </Suspense>
     </AuthCard>
   );
 }
