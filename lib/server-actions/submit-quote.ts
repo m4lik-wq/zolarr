@@ -6,6 +6,7 @@ import { quoteFullSchema } from '@/lib/validation/quote-schema';
 import { generateQuoteNumber } from '@/lib/utils/quote-number';
 import { findIrradiance } from '@/lib/data/irradiance';
 import { estimateSystem, annualSavings, paybackYears } from '@/lib/calculator';
+import { getCurrentUser } from '@/lib/auth/server';
 
 export type SubmitQuoteResult =
   | { ok: true; quoteNumber: string }
@@ -27,6 +28,7 @@ export async function submitQuote(input: unknown): Promise<SubmitQuoteResult> {
   const payback = estKwp && annual ? paybackYears({ systemKwp: estKwp, annualSavingsTry: annual }) : null;
 
   const supabase = await createClient();
+  const user = await getCurrentUser();
 
   for (let attempt = 0; attempt < 3; attempt++) {
     const quoteNumber = generateQuoteNumber('ZQT');
@@ -45,6 +47,7 @@ export async function submitQuote(input: unknown): Promise<SubmitQuoteResult> {
       estimated_kwp: estKwp ? Number(estKwp.toFixed(3)) : null,
       estimated_savings_try: annual ? Number(annual.toFixed(2)) : null,
       estimated_payback_years: payback ? Number(payback.toFixed(2)) : null,
+      user_id: user?.id ?? null,
     });
 
     if (!error) {
