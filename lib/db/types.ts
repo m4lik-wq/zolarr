@@ -105,3 +105,56 @@ export interface ContactMessage {
   status: 'new' | 'read' | 'replied' | 'archived';
   createdAt: string;
 }
+
+export interface Profile {
+  id: string;
+  email: string;
+  name: string | null;
+  phone: string | null;
+  role: 'customer' | 'moderator' | 'assistant' | 'admin';
+  avatarUrl: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Address {
+  id: string;
+  userId: string;
+  label: string;
+  fullName: string;
+  phone: string;
+  city: string;
+  district: string | null;
+  postalCode: string | null;
+  address: string;
+  isDefault: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Favorite {
+  userId: string;
+  productId: string;
+  createdAt: string;
+}
+
+export interface StockAlert {
+  id: string;
+  userId: string;
+  productId: string;
+  email: string;
+  notified: boolean;
+  notifiedAt: string | null;
+  createdAt: string;
+}
+
+export interface UserQuote {
+  id: string;
+  quoteNumber: string;
+  city: string;
+  installationLocation: string;
+  status: 'new' | 'contacted' | 'quoted' | 'won' | 'lost';
+  estimatedKwp: number | null;
+  estimatedSavingsTry: number | null;
+  createdAt: string;
+}
