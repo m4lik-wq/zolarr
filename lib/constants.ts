@@ -26,6 +26,12 @@ export const CONTACT = {
   phone: '+90 (212) 555 0 555',
   whatsapp: '+905555555555',
   email: 'info@zolarr.com.tr',
+  social: {
+    instagram: 'https://instagram.com/zolarr',
+    linkedin: 'https://linkedin.com/company/zolarr',
+    youtube: 'https://youtube.com/@zolarr',
+    facebook: 'https://facebook.com/zolarr',
+  },
 } as const;
 
 export const CALC = {
