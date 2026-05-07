@@ -4,6 +4,8 @@ import 'server-only';
 import { createClient } from '@/lib/supabase/server';
 import { dealerFullSchema, type DealerFullInput } from '@/lib/validation/dealer-schema';
 import { generateQuoteNumber } from '@/lib/utils/quote-number';
+import { sendEmail } from '@/lib/email/send';
+import { dealerAdminEmail, dealerApplicantEmail } from '@/lib/email/templates/dealer';
 
 export type SubmitDealerResult =
   | { ok: true; applicationNumber: string }
@@ -39,6 +41,23 @@ export async function submitDealer(input: DealerFullInput): Promise<SubmitDealer
     });
 
     if (!error) {
+      const adminEmail = process.env.ADMIN_EMAIL;
+      const emailData = {
+        applicationNumber,
+        companyName: data.companyName,
+        contactName: data.contactName,
+        contactEmail: data.contactEmail,
+        contactPhone: data.contactPhone,
+        serviceCategories: data.serviceCategories,
+        serviceAreas: data.serviceAreas,
+        experienceYears: data.experienceYears ?? null,
+      };
+      await Promise.allSettled([
+        adminEmail
+          ? sendEmail({ to: adminEmail, replyTo: data.contactEmail, ...dealerAdminEmail(emailData) })
+          : Promise.resolve(),
+        sendEmail({ to: data.contactEmail, ...dealerApplicantEmail(emailData) }),
+      ]);
       return { ok: true, applicationNumber };
     }
 
