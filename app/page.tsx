@@ -1,4 +1,5 @@
 import { Hero } from '@/components/landing/hero';
+import { TrustStrip } from '@/components/landing/trust-strip';
 import { ProductSlider } from '@/components/home/product-slider';
 import { PathCards } from '@/components/home/path-cards';
 import { WhyZolarr } from '@/components/home/why-zolarr';
@@ -15,6 +16,7 @@ export default function HomePage() {
   return (
     <>
       <Hero />
+      <TrustStrip />
       <ProductSlider />
       <PathCards />
       <WhyZolarr />
