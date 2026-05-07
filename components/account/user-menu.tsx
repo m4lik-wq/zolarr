@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { User, LogIn, UserPlus, LogOut, FileText, Heart, Bell, Settings } from 'lucide-react';
+import { User, LogOut, FileText, Heart, Bell, Settings } from 'lucide-react';
 import { signOutAction } from '@/lib/auth/actions';
 import { getCurrentProfile } from '@/lib/auth/server';
 import { AdminLink } from './admin-link';
@@ -8,18 +8,9 @@ import { NotificationBell } from '@/components/admin/notification-bell';
 export async function UserMenu() {
   const profile = await getCurrentProfile();
 
-  if (!profile) {
-    return (
-      <div className="hidden items-center gap-2 sm:flex">
-        <Link href="/giris" className="inline-flex items-center gap-1.5 text-sm hover:text-[var(--color-brand)]">
-          <LogIn className="h-4 w-4" /> Giriş
-        </Link>
-        <Link href="/kayit" className="inline-flex items-center gap-1.5 rounded-2xl bg-[var(--color-brand)] px-3 py-1.5 text-sm text-[var(--color-bg-base)] hover:bg-[var(--color-brand-dark)]">
-          <UserPlus className="h-4 w-4" /> Kayıt
-        </Link>
-      </div>
-    );
-  }
+  // Hibrit pattern: oturum açılmamışsa header'da hiçbir şey gösterme.
+  // Giriş/Kayıt linkleri footer'da yer alıyor (FooterAuth bileşeni).
+  if (!profile) return null;
 
   return (
     <div className="flex items-center gap-2">

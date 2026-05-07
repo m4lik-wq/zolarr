@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Mail, Phone, MapPin } from 'lucide-react';
+import { Mail, Phone, MapPin, LogIn, UserPlus } from 'lucide-react';
 import { Logo } from '@/components/ui/logo';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -101,6 +101,21 @@ export function Footer() {
                 </li>
               ))}
             </ul>
+            <h4 className="font-display font-semibold text-base mt-6 mb-3">Hesap</h4>
+            <div className="flex flex-col gap-2">
+              <Link
+                href="/giris"
+                className="inline-flex items-center gap-1.5 text-sm text-[var(--color-text-muted)] hover:text-[var(--color-brand)] transition-colors"
+              >
+                <LogIn className="h-4 w-4" /> Giriş Yap
+              </Link>
+              <Link
+                href="/kayit"
+                className="inline-flex items-center gap-1.5 text-sm text-[var(--color-text-muted)] hover:text-[var(--color-brand)] transition-colors"
+              >
+                <UserPlus className="h-4 w-4" /> Kayıt Ol
+              </Link>
+            </div>
           </div>
 
           <div>
