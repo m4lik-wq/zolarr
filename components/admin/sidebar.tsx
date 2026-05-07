@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
   LayoutDashboard, FileText, Building2, Mail, Users,
-  Package, FolderTree, Sparkles, HelpCircle, Truck, ArrowLeft,
+  Package, FolderTree, Sparkles, HelpCircle, Truck, ArrowLeft, Brain,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -19,6 +19,7 @@ const ITEMS = [
   { href: '/admin/tedarikciler', label: 'Tedarikçiler', icon: Truck },
   { href: '/admin/projeler', label: 'Projeler', icon: Sparkles },
   { href: '/admin/sss', label: 'SSS', icon: HelpCircle },
+  { href: '/admin/ai', label: 'AI Bilgi Tabanı', icon: Brain },
 ];
 
 export function AdminSidebar() {
