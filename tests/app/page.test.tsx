@@ -30,6 +30,9 @@ vi.mock('@/components/landing/customer-stories', () => ({
 vi.mock('@/components/landing/impact-counter', () => ({
   ImpactCounter: () => null,
 }));
+vi.mock('@/components/landing/faq-snippet', () => ({
+  FaqSnippet: () => null,
+}));
 
 describe('HomePage', () => {
   it('renders all 12 main section landmarks', () => {

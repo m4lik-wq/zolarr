@@ -5,6 +5,7 @@ import { CampaignBanner } from '@/components/landing/campaign-banner';
 import { FeaturedProducts } from '@/components/landing/featured-products';
 import { CustomerStories } from '@/components/landing/customer-stories';
 import { ImpactCounter } from '@/components/landing/impact-counter';
+import { FaqSnippet } from '@/components/landing/faq-snippet';
 import { ProductSlider } from '@/components/home/product-slider';
 import { PathCards } from '@/components/home/path-cards';
 import { WhyZolarr } from '@/components/home/why-zolarr';
@@ -27,6 +28,7 @@ export default function HomePage() {
       <FeaturedProducts />
       <CustomerStories />
       <ImpactCounter />
+      <FaqSnippet />
       <ProductSlider />
       <PathCards />
       <WhyZolarr />
