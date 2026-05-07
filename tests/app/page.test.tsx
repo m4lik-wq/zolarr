@@ -22,7 +22,7 @@ vi.mock('@/components/home/stock-products', () => ({
 describe('HomePage', () => {
   it('renders all 12 main section landmarks', () => {
     render(<HomePage />);
-    expect(screen.getByRole('heading', { level: 1, name: /Güneşten geleceğe/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 1, name: /Faturanızdan kurtulun/i })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: /Hangi yoldan/i })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: /Neden Zolarr/i })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: /4 adımda/i })).toBeInTheDocument();

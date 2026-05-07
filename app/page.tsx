@@ -1,4 +1,4 @@
-import { Hero } from '@/components/home/hero';
+import { Hero } from '@/components/landing/hero';
 import { ProductSlider } from '@/components/home/product-slider';
 import { PathCards } from '@/components/home/path-cards';
 import { WhyZolarr } from '@/components/home/why-zolarr';
