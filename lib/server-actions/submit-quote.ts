@@ -7,6 +7,8 @@ import { generateQuoteNumber } from '@/lib/utils/quote-number';
 import { findIrradiance } from '@/lib/data/irradiance';
 import { estimateSystem, annualSavings, paybackYears } from '@/lib/calculator';
 import { getCurrentUser } from '@/lib/auth/server';
+import { sendEmail } from '@/lib/email/send';
+import { quoteAdminEmail, quoteCustomerEmail } from '@/lib/email/templates/quote';
 
 export type SubmitQuoteResult =
   | { ok: true; quoteNumber: string }
@@ -51,6 +53,24 @@ export async function submitQuote(input: unknown): Promise<SubmitQuoteResult> {
     });
 
     if (!error) {
+      // Best-effort email — don't fail the form if email fails
+      const adminEmail = process.env.ADMIN_EMAIL;
+      const emailData = {
+        quoteNumber,
+        contactName: data.contactName,
+        contactEmail: data.contactEmail,
+        contactPhone: data.contactPhone,
+        city: data.city,
+        district: data.district,
+        installationLocation: data.installationLocation,
+        estimatedKwp: estKwp,
+      };
+      await Promise.allSettled([
+        adminEmail
+          ? sendEmail({ to: adminEmail, replyTo: data.contactEmail, ...quoteAdminEmail(emailData) })
+          : Promise.resolve(),
+        sendEmail({ to: data.contactEmail, ...quoteCustomerEmail(emailData) }),
+      ]);
       return { ok: true, quoteNumber };
     }
 
