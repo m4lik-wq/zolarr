@@ -41,3 +41,27 @@ export async function signupsPerDay(days: number): Promise<DayCount[]> {
   await requireAdmin();
   return countByDay('profiles', days);
 }
+
+export interface CityCount {
+  city: string;
+  count: number;
+}
+
+export async function topCitiesQuotes(days: number, limit = 10): Promise<CityCount[]> {
+  await requireAdmin();
+  const sb = createAdminClient();
+  const { start } = rangeToDates(days);
+  const startIso = `${start}T00:00:00Z`;
+  const { data } = await sb
+    .from('quotes')
+    .select('city')
+    .gte('created_at', startIso);
+  const buckets = new Map<string, number>();
+  for (const row of (data ?? []) as Array<{ city: string }>) {
+    buckets.set(row.city, (buckets.get(row.city) ?? 0) + 1);
+  }
+  return Array.from(buckets.entries())
+    .map(([city, count]) => ({ city, count }))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, limit);
+}
