@@ -234,3 +234,27 @@ export interface AdminUser {
   role: 'customer' | 'moderator' | 'assistant' | 'admin';
   createdAt: string;
 }
+
+export interface Supplier {
+  id: string;
+  slug: string;
+  name: string;
+  baseUrl: string | null;
+  adapterSlug: string;
+  enabled: boolean;
+  lastSyncedAt: string | null;
+  lastSyncError: string | null;
+  createdAt: string;
+}
+
+export interface SupplierProduct {
+  id: string;
+  supplierId: string;
+  productId: string;
+  supplierUrl: string;
+  lastPrice: number | null;
+  lastStock: number | null;
+  lastSyncedAt: string | null;
+  lastError: string | null;
+  createdAt: string;
+}

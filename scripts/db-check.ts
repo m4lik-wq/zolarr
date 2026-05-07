@@ -23,7 +23,9 @@ async function main() {
       (select count(*) from information_schema.triggers
         where trigger_schema='public' and trigger_name in (
           'trg_notify_new_quote','trg_notify_new_dealer','trg_notify_new_contact'
-        )) as trigger_count;
+        )) as trigger_count,
+      to_regclass('public.suppliers')         is not null as suppliers,
+      to_regclass('public.supplier_products') is not null as supplier_products;
   `);
   console.log('DB durumu:', rows[0]);
   await client.end();
