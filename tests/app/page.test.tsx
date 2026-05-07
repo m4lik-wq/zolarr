@@ -18,6 +18,15 @@ vi.mock('@/components/home/stock-products', () => ({
     </section>
   ),
 }));
+vi.mock('@/components/landing/campaign-banner', () => ({
+  CampaignBanner: () => null,
+}));
+vi.mock('@/components/landing/featured-products', () => ({
+  FeaturedProducts: () => null,
+}));
+vi.mock('@/components/landing/customer-stories', () => ({
+  CustomerStories: () => null,
+}));
 
 describe('HomePage', () => {
   it('renders all 12 main section landmarks', () => {

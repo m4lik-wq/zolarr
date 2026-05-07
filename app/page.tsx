@@ -3,6 +3,7 @@ import { TrustStrip } from '@/components/landing/trust-strip';
 import { HowItWorks } from '@/components/landing/how-it-works';
 import { CampaignBanner } from '@/components/landing/campaign-banner';
 import { FeaturedProducts } from '@/components/landing/featured-products';
+import { CustomerStories } from '@/components/landing/customer-stories';
 import { ProductSlider } from '@/components/home/product-slider';
 import { PathCards } from '@/components/home/path-cards';
 import { WhyZolarr } from '@/components/home/why-zolarr';
@@ -23,6 +24,7 @@ export default function HomePage() {
       <HowItWorks />
       <CampaignBanner />
       <FeaturedProducts />
+      <CustomerStories />
       <ProductSlider />
       <PathCards />
       <WhyZolarr />
