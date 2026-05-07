@@ -106,6 +106,13 @@ export interface ContactMessage {
   createdAt: string;
 }
 
+export interface EmailPreferences {
+  marketing: boolean;
+  stock_alerts: boolean;
+  quote_status: boolean;
+  dealer_status: boolean;
+}
+
 export interface Profile {
   id: string;
   email: string;
@@ -115,6 +122,8 @@ export interface Profile {
   avatarUrl: string | null;
   createdAt: string;
   updatedAt: string;
+  emailPreferences: EmailPreferences;
+  unsubscribeSecret: string;
 }
 
 export interface Address {

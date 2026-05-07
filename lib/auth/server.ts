@@ -1,6 +1,6 @@
 import 'server-only';
 import { createClient } from '@/lib/supabase/server';
-import type { Profile } from '@/lib/db/types';
+import type { Profile, EmailPreferences } from '@/lib/db/types';
 
 export async function getCurrentUser() {
   const supabase = await createClient();
@@ -14,7 +14,7 @@ export async function getCurrentProfile(): Promise<Profile | null> {
   if (!user) return null;
   const { data, error } = await supabase
     .from('profiles')
-    .select('id,email,name,phone,role,avatar_url,created_at,updated_at')
+    .select('id,email,name,phone,role,avatar_url,created_at,updated_at,email_preferences,unsubscribe_secret')
     .eq('id', user.id)
     .maybeSingle();
   if (error || !data) return null;
@@ -27,6 +27,8 @@ export async function getCurrentProfile(): Promise<Profile | null> {
     avatarUrl: data.avatar_url,
     createdAt: data.created_at,
     updatedAt: data.updated_at,
+    emailPreferences: data.email_preferences as EmailPreferences,
+    unsubscribeSecret: data.unsubscribe_secret,
   };
 }
 
