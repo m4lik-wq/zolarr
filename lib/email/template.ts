@@ -2,12 +2,16 @@ export interface RenderEmailOptions {
   title: string;
   body: string; // HTML
   preheader?: string;
+  unsubscribe?: { url: string; categoryLabel: string };
 }
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://zolarr.com';
 
 export function renderEmail(opts: RenderEmailOptions): string {
   const { title, body, preheader } = opts;
+  const prefsLink = opts.unsubscribe
+    ? `<a href="${opts.unsubscribe.url}" style="color:#5DD62C;">${escapeHtml(opts.unsubscribe.categoryLabel)} e-postalarından çık</a>`
+    : `<a href="${SITE_URL}/ayarlar" style="color:#5DD62C;">Tercihler</a>`;
   return `<!doctype html>
 <html lang="tr">
   <head>
@@ -35,7 +39,7 @@ export function renderEmail(opts: RenderEmailOptions): string {
             <tr>
               <td style="padding:24px 32px;border-top:1px solid #262626;color:#888;font-size:12px;line-height:1.5;">
                 Bu e-posta Zolarr formuna girdiğiniz bilgilere göre size gönderildi.<br>
-                <a href="${SITE_URL}/ayarlar" style="color:#5DD62C;">Tercihler</a>
+                ${prefsLink}
                 &nbsp;·&nbsp;
                 <a href="${SITE_URL}/kvkk" style="color:#5DD62C;">KVKK & Gizlilik</a>
                 &nbsp;·&nbsp;
