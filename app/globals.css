@@ -18,9 +18,14 @@
   --color-danger: #E94B4B;
   --color-info: #4B9BE9;
 
-  --font-display: "Space Grotesk", system-ui, sans-serif;
-  --font-body: "Inter", system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --font-display: var(--font-display), ui-serif, Georgia, serif;
+  --font-body: var(--font-body), system-ui, sans-serif;
+  --font-mono: var(--font-mono), ui-monospace, monospace;
+
+  --color-warm-gold: #F4A82C;
+  --color-warm-gold-soft: rgba(244, 168, 44, 0.15);
+  --color-deep-sky: #0A1628;
+  --color-deep-sky-soft: rgba(10, 22, 40, 0.06);
 
   --radius-sm: 8px;
   --radius-md: 12px;
@@ -68,6 +73,15 @@
   }
   .glow {
     box-shadow: var(--shadow-glow);
+  }
+  .font-display {
+    font-family: var(--font-display);
+    font-variation-settings: 'opsz' 144, 'SOFT' 100, 'WONK' 0;
+    font-feature-settings: 'ss01';
+    letter-spacing: -0.02em;
+  }
+  .font-mono {
+    font-family: var(--font-mono);
   }
   @media (pointer: fine) and (hover: hover) {
     body.has-custom-cursor,

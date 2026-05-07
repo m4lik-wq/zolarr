@@ -1,32 +1,11 @@
 import type { Metadata } from 'next';
-import { Space_Grotesk, Inter, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
+import { fraunces, manrope, jetbrains } from '@/lib/design/fonts';
 import { ThemeProvider } from '@/components/providers/theme-provider';
 import { CustomCursor } from '@/components/ui/cursor';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { FloatingStack } from '@/components/layout/floating/floating-stack';
-
-const spaceGrotesk = Space_Grotesk({
-  subsets: ['latin', 'latin-ext'],
-  variable: '--font-display',
-  display: 'swap',
-  weight: ['500', '600', '700'],
-});
-
-const inter = Inter({
-  subsets: ['latin', 'latin-ext'],
-  variable: '--font-body',
-  display: 'swap',
-  weight: ['400', '500', '600'],
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ['latin', 'latin-ext'],
-  variable: '--font-mono',
-  display: 'swap',
-  weight: ['400', '500'],
-});
 
 export const metadata: Metadata = {
   title: 'Zolarr — Güneşten Geleceğe',
@@ -38,7 +17,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="tr" suppressHydrationWarning>
       <body
-        className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} antialiased min-h-screen flex flex-col`}
+        className={`${fraunces.variable} ${manrope.variable} ${jetbrains.variable} antialiased min-h-screen flex flex-col`}
       >
         <ThemeProvider>
           <CustomCursor />
