@@ -11,6 +11,8 @@ import {
   resetSchema,
   profileEditSchema,
 } from '@/lib/validation/auth-schema';
+import { sendEmail } from '@/lib/email/send';
+import { welcomeEmail } from '@/lib/email/templates/welcome';
 
 export type ActionResult = { ok: true } | { ok: false; error: string };
 
@@ -52,6 +54,13 @@ export async function signUpAction(input: unknown): Promise<ActionResult> {
     }
     return { ok: false, error: 'Kayıt sırasında bir hata oluştu.' };
   }
+  // Best-effort welcome email (Supabase confirmation email goes separately)
+  await Promise.allSettled([
+    sendEmail({
+      to: parsed.data.email,
+      ...welcomeEmail({ name: parsed.data.name }),
+    }),
+  ]);
   return { ok: true };
 }
 
