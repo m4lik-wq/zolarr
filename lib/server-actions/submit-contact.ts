@@ -4,6 +4,8 @@ import 'server-only';
 import { createClient } from '@/lib/supabase/server';
 import { contactSchema } from '@/lib/validation/contact-schema';
 import { generateContactNumber } from '@/lib/utils/contact-number';
+import { sendEmail } from '@/lib/email/send';
+import { contactAdminEmail, contactSenderEmail } from '@/lib/email/templates/contact';
 
 export type SubmitContactResult =
   | { ok: true; messageNumber: string }
@@ -28,6 +30,21 @@ export async function submitContact(input: unknown): Promise<SubmitContactResult
       body: data.body,
     });
     if (!error) {
+      const adminEmail = process.env.ADMIN_EMAIL;
+      const emailData = {
+        messageNumber,
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        subject: data.subject,
+        body: data.body,
+      };
+      await Promise.allSettled([
+        adminEmail
+          ? sendEmail({ to: adminEmail, replyTo: data.email, ...contactAdminEmail(emailData) })
+          : Promise.resolve(),
+        sendEmail({ to: data.email, ...contactSenderEmail(emailData) }),
+      ]);
       return { ok: true, messageNumber };
     }
     if ((error as { code?: string }).code === '23505') {
