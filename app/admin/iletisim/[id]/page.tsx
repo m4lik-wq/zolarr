@@ -15,7 +15,8 @@ export default async function AdminIletisimDetayPage({ params }: PageProps) {
   if (!message) notFound();
 
   const replySubject = message.subject ? `Re: ${message.subject}` : 'Re: İletişim mesajınız';
-  const mailtoHref = `mailto:${message.email}?subject=${encodeURIComponent(replySubject)}`;
+  const mailtoHref = `mailto:${encodeURIComponent(message.email)}?subject=${encodeURIComponent(replySubject)}`;
+  const mailtoSimple = `mailto:${encodeURIComponent(message.email)}`;
 
   return (
     <div className="space-y-6">
@@ -39,7 +40,7 @@ export default async function AdminIletisimDetayPage({ params }: PageProps) {
           <div className="flex justify-between gap-2">
             <dt className="text-[var(--color-text-muted)]">E-posta</dt>
             <dd className="text-right">
-              <a href={`mailto:${message.email}`} className="hover:underline">
+              <a href={mailtoSimple} className="hover:underline">
                 {message.email}
               </a>
             </dd>
@@ -48,7 +49,7 @@ export default async function AdminIletisimDetayPage({ params }: PageProps) {
             <div className="flex justify-between gap-2">
               <dt className="text-[var(--color-text-muted)]">Telefon</dt>
               <dd className="text-right">
-                <a href={`tel:${message.phone}`} className="hover:underline">
+                <a href={`tel:${encodeURIComponent(message.phone)}`} className="hover:underline">
                   {message.phone}
                 </a>
               </dd>

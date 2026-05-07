@@ -1,5 +1,20 @@
 -- 0010_admin_notifications.sql
 
+-- is_admin() SECURITY DEFINER helper: profiles tablosunun RLS'inden bagimsiz
+-- olarak rolu kontrol eder. RLS politikalari icin tek dogru kaynak.
+create or replace function public.is_admin(uid uuid default auth.uid())
+returns boolean
+language sql
+security definer
+set search_path = public
+stable
+as $$
+  select exists (
+    select 1 from public.profiles
+    where id = uid and role = 'admin'
+  );
+$$;
+
 create table if not exists public.notifications (
   id uuid primary key default gen_random_uuid(),
   type text not null check (type in (
@@ -17,19 +32,11 @@ alter table public.notifications enable row level security;
 
 drop policy if exists "notifications_admin_read" on public.notifications;
 create policy "notifications_admin_read" on public.notifications
-  for select using (
-    exists (
-      select 1 from public.profiles where id = auth.uid() and role = 'admin'
-    )
-  );
+  for select using (public.is_admin());
 
 drop policy if exists "notifications_admin_update" on public.notifications;
 create policy "notifications_admin_update" on public.notifications
-  for update using (
-    exists (
-      select 1 from public.profiles where id = auth.uid() and role = 'admin'
-    )
-  );
+  for update using (public.is_admin());
 
 -- Triggers: yeni teklif, bayi, iletisim mesaji geldiginde notification yarat
 

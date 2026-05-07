@@ -41,7 +41,7 @@ export default async function AdminBayiDetayPage({ params }: PageProps) {
             <div className="flex justify-between gap-2">
               <dt className="text-[var(--color-text-muted)]">Telefon</dt>
               <dd className="flex gap-2">
-                <a href={`tel:${dealer.contactPhone}`} className="hover:underline">
+                <a href={`tel:${encodeURIComponent(dealer.contactPhone)}`} className="hover:underline">
                   {dealer.contactPhone}
                 </a>
                 <a
@@ -57,7 +57,7 @@ export default async function AdminBayiDetayPage({ params }: PageProps) {
             <div className="flex justify-between gap-2">
               <dt className="text-[var(--color-text-muted)]">E-posta</dt>
               <dd className="text-right">
-                <a href={`mailto:${dealer.contactEmail}`} className="hover:underline">
+                <a href={`mailto:${encodeURIComponent(dealer.contactEmail)}`} className="hover:underline">
                   {dealer.contactEmail}
                 </a>
               </dd>

@@ -18,7 +18,10 @@ export async function updateContactMessageAction(input: {
   const patch: Record<string, unknown> = {};
   if (input.status && STATUSES.includes(input.status)) patch.status = input.status;
   const { error } = await sb.from('contact_messages').update(patch).eq('id', input.id);
-  if (error) return { ok: false, error: error.message };
+  if (error) {
+    console.error('[admin] updateContactMessageAction failed', { id: input.id, error });
+    return { ok: false, error: 'Kayıt güncellenemedi, lütfen tekrar deneyin.' };
+  }
   revalidatePath(`/admin/iletisim/${input.id}`);
   revalidatePath('/admin/iletisim');
   revalidatePath('/admin');

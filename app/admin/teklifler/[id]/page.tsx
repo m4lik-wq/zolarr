@@ -38,7 +38,7 @@ export default async function AdminTeklifDetayPage({ params }: PageProps) {
             <div className="flex justify-between gap-2">
               <dt className="text-[var(--color-text-muted)]">Telefon</dt>
               <dd className="flex gap-2">
-                <a href={`tel:${quote.contactPhone}`} className="hover:underline">
+                <a href={`tel:${encodeURIComponent(quote.contactPhone)}`} className="hover:underline">
                   {quote.contactPhone}
                 </a>
                 <a
@@ -54,7 +54,7 @@ export default async function AdminTeklifDetayPage({ params }: PageProps) {
             <div className="flex justify-between">
               <dt className="text-[var(--color-text-muted)]">E-posta</dt>
               <dd>
-                <a href={`mailto:${quote.contactEmail}`} className="hover:underline">
+                <a href={`mailto:${encodeURIComponent(quote.contactEmail)}`} className="hover:underline">
                   {quote.contactEmail}
                 </a>
               </dd>
