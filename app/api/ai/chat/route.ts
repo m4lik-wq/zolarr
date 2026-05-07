@@ -4,6 +4,7 @@ import { getAnthropic, AI_MODEL, AI_MAX_TOKENS } from '@/lib/ai/client';
 import { ZOLARR_SYSTEM_PROMPT } from '@/lib/ai/system-prompt';
 import { checkAndIncrement, checkAndIncrementForUser, extractIp } from '@/lib/ai/rate-limit';
 import { getCurrentUser } from '@/lib/auth/server';
+import { retrieveContext } from '@/lib/ai/embeddings/retrieve';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -55,6 +56,32 @@ export async function POST(req: Request) {
 
   const anthropic = getAnthropic();
 
+  // Retrieve RAG context from the last user message and augment the system
+  // prompt. retrieveContext returns [] when no provider/key is configured or
+  // when the query is empty, keeping behavior identical to the pre-RAG path.
+  const messagesArr = parsed.data.messages;
+  const last = messagesArr.length > 0 ? messagesArr[messagesArr.length - 1] : null;
+  const queryText = last && typeof last.content === 'string' ? last.content : '';
+  let augmentedSystemPrompt = ZOLARR_SYSTEM_PROMPT;
+  try {
+    const context = await retrieveContext(queryText, 5);
+    if (context.length > 0) {
+      const sections = context
+        .map((c) => `[${c.docType}] ${c.content}`)
+        .join('\n\n---\n\n');
+      augmentedSystemPrompt = `${ZOLARR_SYSTEM_PROMPT}
+
+## Bilgi Tabanı (Kaynaklar)
+
+Aşağıdaki kaynaklar şirket veritabanından geldi. Kullanıcının sorusunu cevaplarken bu bilgilerden yararlan, ama "kaynak X'te yazıyor ki" gibi açık referans verme. Doğal Türkçe ile cevapla.
+
+${sections}`;
+    }
+  } catch (err) {
+    console.error('[ai/chat] retrieveContext hata:', err);
+    // Continue without context — never break streaming.
+  }
+
   const stream = new ReadableStream<Uint8Array>({
     async start(controller) {
       const enc = new TextEncoder();
@@ -65,11 +92,11 @@ export async function POST(req: Request) {
           system: [
             {
               type: 'text',
-              text: ZOLARR_SYSTEM_PROMPT,
+              text: augmentedSystemPrompt,
               cache_control: { type: 'ephemeral' },
             },
           ],
-          messages: parsed.data.messages,
+          messages: messagesArr,
         });
 
         for await (const event of response) {
