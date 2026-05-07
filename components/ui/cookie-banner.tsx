@@ -32,7 +32,7 @@ export function CookieBanner() {
           initial={{ y: 100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 100, opacity: 0 }}
-          className="fixed bottom-0 left-0 right-0 z-40 glass border-t border-[var(--color-border-glass)] p-4 md:bottom-4 md:left-4 md:right-auto md:max-w-md md:rounded-2xl md:border"
+          className="fixed bottom-0 left-0 right-0 z-40 backdrop-blur-md bg-[var(--color-bg-elevated)]/95 border-t border-[var(--color-border-glass)] p-4 md:bottom-4 md:left-auto md:right-4 md:max-w-sm md:rounded-2xl md:border md:shadow-[var(--shadow-glass)]"
           role="dialog"
           aria-labelledby="cookie-title"
         >
