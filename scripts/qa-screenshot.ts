@@ -19,6 +19,33 @@ const THEMES: Theme[] = ['light', 'dark'];
 
 const OUT_DIR = join(process.cwd(), 'screenshots');
 
+async function launchBrowser(): Promise<Browser> {
+  // Windows 10/11'de Edge garanti yüklü; Chrome çoğu sistemde var.
+  // Bu sayede `npx playwright install chromium` (150MB) gerekmez.
+  const candidates: Array<'msedge' | 'chrome'> = ['msedge', 'chrome'];
+  for (const channel of candidates) {
+    try {
+      const b = await chromium.launch({ channel, headless: true });
+      console.log(`🚀 Browser: ${channel} (sistem yüklü)`);
+      return b;
+    } catch {
+      console.log(`   ${channel} bulunamadı, sıradakine geçiliyor...`);
+    }
+  }
+  // Son çare: Playwright'ın indirdiği Chromium (yoksa burada hata verir)
+  try {
+    const b = await chromium.launch({ headless: true });
+    console.log('🚀 Browser: bundled Chromium');
+    return b;
+  } catch (e) {
+    console.error('❌ Hiçbir browser bulunamadı.');
+    console.error('   Sisteminizde Microsoft Edge veya Chrome olmalı.');
+    console.error('   Veya: npx playwright install chromium (150MB indirme)');
+    console.error(`   Detay: ${e instanceof Error ? e.message : String(e)}`);
+    process.exit(1);
+  }
+}
+
 async function main() {
   // Single-route mode: npm run qa:screenshot -- <slug>
   const onlySlug = process.argv[2];
@@ -27,16 +54,8 @@ async function main() {
   const ids = await resolveSampleIds();
   console.log('   ', ids);
 
-  console.log('🚀 Playwright Chromium başlatılıyor...');
-  let browser: Browser;
-  try {
-    browser = await chromium.launch({ headless: true });
-  } catch (e) {
-    console.error('❌ Chromium başlatılamadı. Önce browser binary indirin:');
-    console.error('   npx playwright install chromium');
-    console.error(`   Detay: ${e instanceof Error ? e.message : String(e)}`);
-    process.exit(1);
-  }
+  // Sistem browser kullan (indirme gerekmesin) — sırayla Edge → Chrome → bundled Chromium
+  const browser = await launchBrowser();
 
   const adminEmail = process.env.QA_ADMIN_EMAIL;
   const adminPassword = process.env.QA_ADMIN_PASSWORD;
