@@ -37,14 +37,19 @@ async function main() {
   }
 
   console.log(`✅ Bulundu (id: ${user.id})`);
-  console.log('🔐 Şifre güncelleniyor...');
-  const { error: updErr } = await sb.auth.admin.updateUserById(user.id, { password });
+  console.log(`   Email confirmed: ${user.email_confirmed_at ? 'evet' : 'HAYIR'}`);
+  console.log('🔐 Şifre güncelleniyor + e-posta onaylanıyor...');
+  const { error: updErr } = await sb.auth.admin.updateUserById(user.id, {
+    password,
+    email_confirm: true,
+  });
   if (updErr) {
     console.error('❌ Şifre güncellenemedi:', updErr);
     process.exit(1);
   }
 
   console.log(`✅ Şifre güncellendi: ${email} → ${'•'.repeat(password.length)}`);
+  console.log('✅ E-posta onaylandı (eğer önceden onaylanmamışsa).');
 }
 
 main().catch((e) => {

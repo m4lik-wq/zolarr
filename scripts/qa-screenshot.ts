@@ -57,8 +57,9 @@ async function main() {
   // Sistem browser kullan (indirme gerekmesin) — sırayla Edge → Chrome → bundled Chromium
   const browser = await launchBrowser();
 
-  const adminEmail = process.env.QA_ADMIN_EMAIL;
-  const adminPassword = process.env.QA_ADMIN_PASSWORD;
+  // .trim() defensive — .env.local'da `KEY= value` formatı bazen boşlukla geliyor
+  const adminEmail = process.env.QA_ADMIN_EMAIL?.trim();
+  const adminPassword = process.env.QA_ADMIN_PASSWORD?.trim();
 
   const publicCtx = await browser.newContext();
   const adminCtx = await browser.newContext();
