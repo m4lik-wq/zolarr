@@ -25,7 +25,9 @@ async function main() {
           'trg_notify_new_quote','trg_notify_new_dealer','trg_notify_new_contact'
         )) as trigger_count,
       to_regclass('public.suppliers')         is not null as suppliers,
-      to_regclass('public.supplier_products') is not null as supplier_products;
+      to_regclass('public.supplier_products') is not null as supplier_products,
+      to_regclass('public.embeddings')        is not null as embeddings_exists,
+      exists (select 1 from pg_extension where extname='vector') as pgvector_installed;
   `);
   console.log('DB durumu:', rows[0]);
   await client.end();

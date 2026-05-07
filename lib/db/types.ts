@@ -258,3 +258,12 @@ export interface SupplierProduct {
   lastError: string | null;
   createdAt: string;
 }
+
+export interface Embedding {
+  id: string;
+  docType: 'product' | 'project' | 'faq';
+  docId: string;
+  content: string;
+  metadata: Record<string, unknown>;
+  createdAt: string;
+}
