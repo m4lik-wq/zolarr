@@ -4,12 +4,13 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
   LayoutDashboard, FileText, Building2, Mail, Users,
-  Package, FolderTree, Sparkles, HelpCircle, Truck, ArrowLeft, Brain,
+  Package, FolderTree, Sparkles, HelpCircle, Truck, ArrowLeft, Brain, Megaphone,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const ITEMS = [
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
+  { href: '/admin/kampanyalar', label: 'Kampanyalar', icon: Megaphone },
   { href: '/admin/teklifler', label: 'Teklifler', icon: FileText },
   { href: '/admin/bayiler', label: 'Bayi Başvuruları', icon: Building2 },
   { href: '/admin/iletisim', label: 'İletişim Mesajları', icon: Mail },

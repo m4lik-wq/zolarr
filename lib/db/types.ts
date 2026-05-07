@@ -267,3 +267,17 @@ export interface Embedding {
   metadata: Record<string, unknown>;
   createdAt: string;
 }
+
+export interface Campaign {
+  id: string;
+  title: string;
+  subtitle: string | null;
+  ctaLabel: string | null;
+  ctaHref: string | null;
+  bgImageUrl: string | null;
+  startsAt: string | null;
+  endsAt: string | null;
+  isActive: boolean;
+  sortOrder: number;
+  createdAt: string;
+}
